@@ -1,5 +1,7 @@
 
 // Slick example: https://stackoverflow.com/questions/21314532/slick-n-scala-a-tablequery-object-without-ddl-field
+// https://github.com/slick/slick-examples/blob/master/src/main/scala/com/typesafe/slick/examples/lifted/FirstExample.scala
+// doc: http://slick.typesafe.com/doc/0.11.1/gettingstarted.html
 
 package eu.pulsation.slicksandbox
 
