@@ -9,24 +9,10 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-/*
-import scala.slick.jdbc.JdbcBackend.Database
-import scala.slick.jdbc.{GetResult, StaticQuery => Q}
-import scala.slick.lifted._
-*/
 import scala.slick.driver.SQLiteDriver.simple._
 
 class SlickSandbox extends Activity
 {
-
-   // Definition of the COFFEES table
-  /*
-  class Coffees(tag: Tag) extends Table[COFFEES](tag, "COFFEES") {
-    def name = column[String]("COF_NAME", O.PrimaryKey)
-    def price = column[Double]("PRICE")
-    def * = name ~ price
-  }
-  */
 
   class Suppliers(tag: Tag) extends Table[(Int, String, String, String, String, String)](tag, "SUPPLIERS") {
     def id = column[Int]("SUP_ID", O.PrimaryKey) // This is the primary key column
