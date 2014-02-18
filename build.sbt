@@ -11,5 +11,6 @@ libraryDependencies += "com.typesafe.slick" %% "slick" % "2.0.0"
 
 proguardOptions in Android ++= Seq(
   "-dontwarn javax.naming.InitialContext",
-  "-dontnote org.slf4j.**"
+  "-dontnote org.slf4j.**",
+  "-keep public class org.sqldroid.**"
 )

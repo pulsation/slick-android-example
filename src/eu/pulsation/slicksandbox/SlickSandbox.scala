@@ -49,7 +49,7 @@ class SlickSandbox extends Activity
 
    def saveDataText(view : View) {
    Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_LONG).show()
-     val db = Database.forURL("jdbc:sqlite:/sdcard/slick-sandbox.txt", driver = "org.sqlite.JDBC")
+     val db = Database.forURL("jdbc:sqlite:" + getApplicationContext().getFilesDir() + "slick-sandbox.txt", driver = "org.sqldroid.SQLDroidDriver")
      db withSession {
        implicit session =>
        val suppliers = TableQuery[Suppliers]
