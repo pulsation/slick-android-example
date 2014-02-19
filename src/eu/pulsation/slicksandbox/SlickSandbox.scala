@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import scala.slick.driver.SQLiteDriver.simple._
+import scala.slick.jdbc.meta.MTable
 
 class SlickSandbox extends Activity
 {
@@ -25,17 +26,24 @@ class SlickSandbox extends Activity
     def * = (id, name, street, city, state, zip)
   }
   val suppliers = TableQuery[Suppliers]
+  lazy val db = Database.forURL("jdbc:sqlite:" + getApplicationContext().getFilesDir() + "slick-sandbox.txt", driver = "org.sqldroid.SQLDroidDriver")
 
     /** Called when the activity is first created. */
     override def onCreate(savedInstanceState : Bundle)
     {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main)
+      setContentView(R.layout.main)
+      db withSession {
+        implicit session =>
+        // Create the tables
+          if (MTable.getTables("SUPPLIERS").list().isEmpty) {
+            (suppliers.ddl).create
+          }
+      }
     }
 
    def saveDataText(view : View) {
    Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_LONG).show()
-     val db = Database.forURL("jdbc:sqlite:" + getApplicationContext().getFilesDir() + "slick-sandbox.txt", driver = "org.sqldroid.SQLDroidDriver")
      db withSession {
        implicit session =>
        val suppliers = TableQuery[Suppliers]

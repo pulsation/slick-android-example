@@ -13,6 +13,7 @@ libraryDependencies ++= Seq(
 proguardOptions in Android ++= Seq(
   "-dontwarn javax.naming.InitialContext",
   "-dontnote org.slf4j.**",
+  "-keep class scala.collection.Seq { *; } ",
   "-keep public class org.sqldroid.**"
 )
 
