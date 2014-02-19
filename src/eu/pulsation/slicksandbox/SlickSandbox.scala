@@ -10,13 +10,13 @@ import scala.slick.jdbc.meta.MTable
 class SlickSandbox extends Activity
 {
 
-  class Suppliers(tag: Tag) extends Table[(Int, String)](tag, "NAMES") {
+  class MyData(tag: Tag) extends Table[(Int, String)](tag, "MYDATA") {
     def id = column[Int]("ID", O.PrimaryKey, O.AutoInc) // This is the primary key column
     def name = column[String]("NAME")
     // Every table needs a * projection with the same type as the table's type parameter
     def * = (id, name)
   }
-  val suppliers = TableQuery[Suppliers]
+  val myData = TableQuery[MyData]
   lazy val db = Database.forURL("jdbc:sqlite:" +
     getApplicationContext().getFilesDir() +
     "slick-sandbox.txt", driver = "org.sqldroid.SQLDroidDriver")
@@ -30,7 +30,7 @@ class SlickSandbox extends Activity
       implicit session =>
       // Create table if needed
         if (MTable.getTables("NAMES").list().isEmpty) {
-          (suppliers.ddl).create
+          (myData.ddl).create
         }
     }
   }
@@ -40,10 +40,10 @@ class SlickSandbox extends Activity
     db withSession {
       implicit session =>
       // Get existing rows
-        suppliers.list.foreach(
-          supplier =>
-            mText.append(supplier._1 +
-              " " + supplier._2 +
+        myData.list.foreach(
+          row =>
+            mText.append(row._1 +
+              " " + row._2 +
               System.getProperty("line.separator"))
         )
     }
@@ -61,7 +61,7 @@ class SlickSandbox extends Activity
   def saveDataText(view : View) {
     db withSession {
       implicit session =>
-        suppliers += (0, mEdit.getText().toString)
+        myData += (0, mEdit.getText().toString)
     }
     displayRows()
   }
