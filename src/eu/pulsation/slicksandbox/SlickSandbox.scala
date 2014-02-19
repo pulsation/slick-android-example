@@ -11,19 +11,16 @@ import android.view.View
 import android.widget.Toast
 import scala.slick.driver.SQLiteDriver.simple._
 import scala.slick.jdbc.meta.MTable
+import android.util.Log
 
 class SlickSandbox extends Activity
 {
 
-  class Suppliers(tag: Tag) extends Table[(Int, String, String, String, String, String)](tag, "SUPPLIERS") {
-    def id = column[Int]("SUP_ID", O.PrimaryKey) // This is the primary key column
-    def name = column[String]("SUP_NAME")
-    def street = column[String]("STREET")
-    def city = column[String]("CITY")
-    def state = column[String]("STATE")
-    def zip = column[String]("ZIP")
+  class Suppliers(tag: Tag) extends Table[(Int, String)](tag, "NAMES") {
+    def id = column[Int]("ID", O.PrimaryKey, O.AutoInc) // This is the primary key column
+    def name = column[String]("NAME")
     // Every table needs a * projection with the same type as the table's type parameter
-    def * = (id, name, street, city, state, zip)
+    def * = (id, name)
   }
   val suppliers = TableQuery[Suppliers]
   lazy val db = Database.forURL("jdbc:sqlite:" + getApplicationContext().getFilesDir() + "slick-sandbox.txt", driver = "org.sqldroid.SQLDroidDriver")
@@ -35,10 +32,13 @@ class SlickSandbox extends Activity
       setContentView(R.layout.main)
       db withSession {
         implicit session =>
-        // Create the tables
-          if (MTable.getTables("SUPPLIERS").list().isEmpty) {
+        // Create table if needed
+          if (MTable.getTables("NAMES").list().isEmpty) {
             (suppliers.ddl).create
           }
+
+          // Get existing rows
+          suppliers.list.foreach(supplier => android.util.Log.v("DEBUG", supplier._1 + " " + supplier._2))
       }
     }
 
@@ -46,8 +46,8 @@ class SlickSandbox extends Activity
    Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_LONG).show()
      db withSession {
        implicit session =>
-       val suppliers = TableQuery[Suppliers]
-       suppliers.filter(_.id < 10).map(_.name).list
+         //suppliers += ("Test");
+         suppliers.insert(0, "Test")
      }
 	// TODO
    }
