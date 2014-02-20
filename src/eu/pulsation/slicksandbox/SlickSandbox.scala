@@ -4,11 +4,17 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.{EditText, TextView}
+
 import scala.slick.driver.SQLiteDriver.simple._
 import scala.slick.jdbc.meta.MTable
 
+import scala.concurrent._
+import ExecutionContext.Implicits.global
+
 class SlickSandbox extends Activity
 {
+
+  implicit def toRunnable[F](f: => F): Runnable = new Runnable() { def run() = f }
 
   class MyData(tag: Tag) extends Table[(Int, String)](tag, "MYDATA") {
     def id = column[Int]("ID", O.PrimaryKey, O.AutoInc) // This is the primary key column
@@ -29,23 +35,23 @@ class SlickSandbox extends Activity
     db withSession {
       implicit session =>
       // Create table if needed
-        if (MTable.getTables("NAMES").list().isEmpty) {
+        if (MTable.getTables("MYDATA").list().isEmpty) {
           (myData.ddl).create
         }
     }
   }
 
-  def displayRows() = {
+  def getRows() = {
     mText.setText("")
     db withSession {
       implicit session =>
       // Get existing rows
-        myData.list.foreach(
+        myData.list map(e => (e._1, e._2)) /*.foreach(
           row =>
             mText.append(row._1 +
               " " + row._2 +
               System.getProperty("line.separator"))
-        )
+        )*/
     }
   }
 
@@ -54,8 +60,21 @@ class SlickSandbox extends Activity
   {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.main)
-    createDb()
-    displayRows()
+    val f1 = Future { createDb() }
+    val f2 : Future[List[(Int, String)]] = f1 map {
+      nothing =>
+      getRows()
+    }
+    f2 onSuccess {
+      case l =>
+        runOnUiThread({
+        l foreach( row =>
+          mText.append(row._1 +
+            " " + row._2 +
+            System.getProperty("line.separator"))
+          )
+        })
+    }
   }
 
   def saveDataText(view : View) {
@@ -63,6 +82,5 @@ class SlickSandbox extends Activity
       implicit session =>
         myData += (0, mEdit.getText().toString)
     }
-    displayRows()
   }
 }
