@@ -34,6 +34,7 @@ import scala.slick.driver.SQLiteDriver.simple._
 import scala.slick.jdbc.meta.MTable
 
 import scala.concurrent._
+import scala.language.implicitConversions
 import ExecutionContext.Implicits.global
 
 class SlickAndroidExample extends Activity
