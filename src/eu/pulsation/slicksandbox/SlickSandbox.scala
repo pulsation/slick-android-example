@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.{EditText, TextView}
+import android.util.Log
 
 import scala.slick.driver.SQLiteDriver.simple._
 import scala.slick.jdbc.meta.MTable
@@ -13,7 +14,7 @@ import ExecutionContext.Implicits.global
 
 class SlickSandbox extends Activity
 {
-
+  // Implicit conversion to Runnable when called by runOnUiThread()
   implicit def toRunnable[F](f: => F): Runnable = new Runnable() { def run() = f }
 
   class MyData(tag: Tag) extends Table[(Int, String)](tag, "MYDATA") {
@@ -32,26 +33,51 @@ class SlickSandbox extends Activity
   lazy val mEdit : EditText = findViewById(R.id.data) match { case e : EditText => e }
 
   def createDb() = {
-    db withSession {
-      implicit session =>
+    db withSession { implicit session =>
       // Create table if needed
-        if (MTable.getTables("MYDATA").list().isEmpty) {
-          (myData.ddl).create
-        }
+      Log.v("DEBUG", "Testing if table exists")
+      if (MTable.getTables("MYDATA").list().isEmpty) {
+        (myData.ddl).create
+      }
     }
   }
 
   def getRows() = {
-    mText.setText("")
     db withSession {
       implicit session =>
       // Get existing rows
-        myData.list map(e => (e._1, e._2)) /*.foreach(
-          row =>
-            mText.append(row._1 +
-              " " + row._2 +
-              System.getProperty("line.separator"))
-        )*/
+        myData.list
+    }
+  }
+
+  def displayDataList(rows : List[(Int,String)]) = {
+    mText.setText("")
+    rows foreach({ case (id : Int, name: String) =>
+      mText.append(id +
+        " " + name +
+        System.getProperty("line.separator"))
+    })
+  }
+
+  def saveData() = {
+    db withSession {
+      implicit session =>
+        myData += (0, mEdit.getText().toString)
+        Log.v("DEBUG", "Added some data: " + mEdit.getText().toString);
+    }
+  }
+
+  def processThenDisplay(process : () => Unit) {
+    val fProcessData = Future { process() }
+    val fFetchData : Future[List[(Int, String)]] = fProcessData map((nothing) => {
+      // This will be executed after f1 has been executed
+      Log.v("DEBUG", "After processing")
+      getRows()
+    })
+
+    fFetchData onSuccess {
+      case rows =>
+        runOnUiThread({ displayDataList(rows) })
     }
   }
 
@@ -60,27 +86,10 @@ class SlickSandbox extends Activity
   {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.main)
-    val f1 = Future { createDb() }
-    val f2 : Future[List[(Int, String)]] = f1 map {
-      nothing =>
-      getRows()
-    }
-    f2 onSuccess {
-      case l =>
-        runOnUiThread({
-        l foreach( row =>
-          mText.append(row._1 +
-            " " + row._2 +
-            System.getProperty("line.separator"))
-          )
-        })
-    }
+    processThenDisplay(createDb)
   }
 
   def saveDataText(view : View) {
-    db withSession {
-      implicit session =>
-        myData += (0, mEdit.getText().toString)
-    }
+    processThenDisplay(saveData)
   }
 }
