@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package eu.pulsation.slicksandbox
+package eu.pulsation.slickexample
 
 import android.app.Activity
 import android.os.Bundle
@@ -36,7 +36,7 @@ import scala.slick.jdbc.meta.MTable
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 
-class SlickSandbox extends Activity
+class SlickAndroidExample extends Activity
 {
   final val TableName = "MYDATA"
 
@@ -94,7 +94,7 @@ class SlickSandbox extends Activity
     mText.setText("")
     rows foreach({ case (id : Int, name: String) =>
       mText.append(id +
-        " " + name +
+        ". " + name +
         System.getProperty("line.separator"))
     })
   }

@@ -2,7 +2,7 @@ import android.Keys._
 
 android.Plugin.androidBuild
 
-name := "SlickSandbox"
+name := "SlickAndroidExample"
 
 
 libraryDependencies ++= Seq(
