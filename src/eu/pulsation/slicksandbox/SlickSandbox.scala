@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.{EditText, TextView}
-import android.util.Log
 
 import scala.slick.driver.SQLiteDriver.simple._
 import scala.slick.jdbc.meta.MTable
@@ -35,7 +34,6 @@ class SlickSandbox extends Activity
   def createDb() = {
     db withSession { implicit session =>
       // Create table if needed
-      Log.v("DEBUG", "Testing if table exists")
       if (MTable.getTables("MYDATA").list().isEmpty) {
         (myData.ddl).create
       }
@@ -63,7 +61,6 @@ class SlickSandbox extends Activity
     db withSession {
       implicit session =>
         myData += (0, mEdit.getText().toString)
-        Log.v("DEBUG", "Added some data: " + mEdit.getText().toString);
     }
   }
 
@@ -71,7 +68,6 @@ class SlickSandbox extends Activity
     val fProcessData = Future { process() }
     val fFetchData : Future[List[(Int, String)]] = fProcessData map((nothing) => {
       // This will be executed after f1 has been executed
-      Log.v("DEBUG", "After processing")
       getRows()
     })
 
