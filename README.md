@@ -14,4 +14,4 @@ Then, you can build the project:
 
 Optionally, you could generate an IntelliJ project for these sources:
 
-	$sbt gen-idea
+	$ sbt gen-idea
