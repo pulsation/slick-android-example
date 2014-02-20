@@ -13,10 +13,12 @@ import ExecutionContext.Implicits.global
 
 class SlickSandbox extends Activity
 {
+  final val TableName = "MYDATA"
+
   // Implicit conversion to Runnable when called by runOnUiThread()
   implicit def toRunnable[F](f: => F): Runnable = new Runnable() { def run() = f }
 
-  class MyData(tag: Tag) extends Table[(Int, String)](tag, "MYDATA") {
+  class MyData(tag: Tag) extends Table[(Int, String)](tag, TableName) {
     def id = column[Int]("ID", O.PrimaryKey, O.AutoInc) // This is the primary key column
     def name = column[String]("NAME")
     // Every table needs a * projection with the same type as the table's type parameter
@@ -34,7 +36,7 @@ class SlickSandbox extends Activity
   def createDb() = {
     db withSession { implicit session =>
       // Create table if needed
-      if (MTable.getTables("MYDATA").list().isEmpty) {
+      if (MTable.getTables(TableName).list().isEmpty) {
         (myData.ddl).create
       }
     }
