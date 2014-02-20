@@ -106,7 +106,7 @@ class SlickAndroidExample extends Activity
   def saveData() : Unit = {
     db withSession {
       implicit session =>
-        myData += (0, mEdit.getText().toString)
+        myData += (_, mEdit.getText().toString)
     }
   }
 
