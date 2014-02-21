@@ -127,13 +127,20 @@ class SlickAndroidExample extends Activity
   }
 
   /**
+   * Displays an error message
+   */
+  def notifyError() {
+    Toast.makeText(getApplicationContext(), "Database not initialized yet", Toast.LENGTH_SHORT).show()
+  }
+
+  /**
    * Clear table data
    */
   def clearText(view : View) {
     if (initFuture.isCompleted) {
       processThenDisplay(clearData)
     } else {
-      Toast.makeText(getApplicationContext(), "Database not initialized yet", Toast.LENGTH_SHORT).show()
+      notifyError()
     }
   }
 
@@ -144,7 +151,7 @@ class SlickAndroidExample extends Activity
     if (initFuture.isCompleted) {
       processThenDisplay(saveData)
     } else {
-      Toast.makeText(getApplicationContext(), "Database not initialized yet", Toast.LENGTH_SHORT).show()
+      notifyError()
     }
   }
 }
