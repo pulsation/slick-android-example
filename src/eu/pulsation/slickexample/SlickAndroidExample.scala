@@ -36,6 +36,7 @@ import scala.slick.jdbc.meta.MTable
 import scala.concurrent._
 import scala.language.implicitConversions
 import ExecutionContext.Implicits.global
+import android.text.method.ScrollingMovementMethod
 
 class SlickAndroidExample extends Activity
 {
@@ -138,6 +139,7 @@ class SlickAndroidExample extends Activity
   {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.main)
+    mText.setMovementMethod(new ScrollingMovementMethod())
 
     initFuture
   }

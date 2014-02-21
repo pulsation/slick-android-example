@@ -1,26 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<EditText
-    android:id="@+id/data"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:hint="Please enter some text"
-    />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+        >
+    <EditText
+            android:id="@+id/data"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/add"
+            android:hint="Please enter some text"
+            android:layout_alignParentBottom="true"
+            />
 
- <Button
-     android:layout_height="wrap_content"
-     android:layout_width="wrap_content"
-     android:text="Save"
-     android:onClick="saveDataText" />
+    <Button
+            android:id="@+id/add"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/clear"
+            android:text="Add"
+            android:onClick="saveDataText" />
+    <Button
+            android:id="@+id/clear"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:text="Clear"
+            android:onClick="saveDataText" />
+    <View
+            android:id="@+id/separator"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_margin="3dip"
+            android:layout_above="@+id/data"/>
     <TextView
             android:id="@+id/text"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/separator"
+            android:scrollbars = "vertical"
+
             />
 
-</LinearLayout>
+</RelativeLayout>
 
