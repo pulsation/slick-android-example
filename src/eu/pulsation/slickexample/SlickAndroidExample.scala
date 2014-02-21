@@ -15,7 +15,7 @@ import android.text.method.ScrollingMovementMethod
 
 class SlickAndroidExample extends Activity
 {
-  final val TableName = "MYDATA"
+  final val TableName = "MY_DATA"
 
   // Implicit conversion to Runnable when called by runOnUiThread()
   implicit def toRunnable[F](f: => F): Runnable = new Runnable() { def run() = f }
