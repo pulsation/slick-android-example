@@ -1,24 +1,23 @@
 package eu.pulsation.slickexample
 
-import android.app.Activity
-import android.os.Bundle
-import android.view.View
-import android.widget.{Toast, EditText, TextView}
+import scala.concurrent._
+import scala.language.implicitConversions
+import ExecutionContext.Implicits.global
 
 import scala.slick.driver.SQLiteDriver.simple._
 import scala.slick.jdbc.meta.MTable
 
-import scala.concurrent._
-import scala.language.implicitConversions
-import ExecutionContext.Implicits.global
+import android.app.Activity
+import android.os.Bundle
+import android.view.View
+import android.widget.{Toast, EditText, TextView}
 import android.text.method.ScrollingMovementMethod
 
 class SlickAndroidExample extends Activity
 {
-  final val TableName = "MY_DATA"
 
-  // Implicit conversion to Runnable when called by runOnUiThread()
-  implicit def toRunnable[F](f: => F): Runnable = new Runnable() { def run() = f }
+  // Table name in the SQL database
+  final val TableName = "MY_DATA"
 
   // Table definition
   class MyData(tag: Tag) extends Table[(Int, String)](tag, TableName) {
@@ -28,7 +27,7 @@ class SlickAndroidExample extends Activity
     def * = (id, name)
   }
 
-  // Table instance
+  // Table representation instance
   val myData = TableQuery[MyData]
 
   // Database connection
@@ -39,6 +38,9 @@ class SlickAndroidExample extends Activity
   // Views
   lazy val mText : TextView = findViewById(R.id.text) match { case t : TextView => t }
   lazy val mEdit : EditText = findViewById(R.id.data) match { case e : EditText => e }
+
+  // Implicit conversion to Runnable when called by runOnUiThread()
+  implicit def toRunnable[F](f: => F): Runnable = new Runnable() { def run() = f }
 
   /**
    * Create the table if needed
