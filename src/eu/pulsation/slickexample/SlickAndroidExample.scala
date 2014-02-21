@@ -21,9 +21,9 @@ class SlickAndroidExample extends Activity
 
   // Table definition
   class MyData(tag: Tag) extends Table[(Int, String)](tag, TableName) {
-    def id = column[Int]("ID", O.PrimaryKey, O.AutoInc) // This is the primary key column
+    def id = column[Int]("ID", O.PrimaryKey, O.AutoInc) // This is the primary key column.
     def name = column[String]("SOME_TEXT")
-    // Every table needs a * projection with the same type as the table's type parameter
+    // Every table needs a * projection with the same type as the table's type parameter.
     def * = (id, name)
   }
 
@@ -39,16 +39,13 @@ class SlickAndroidExample extends Activity
   lazy val mText : TextView = findViewById(R.id.text) match { case t : TextView => t }
   lazy val mEdit : EditText = findViewById(R.id.data) match { case e : EditText => e }
 
-  // Implicit conversion to Runnable when called by runOnUiThread()
-  implicit def toRunnable[F](f: => F): Runnable = new Runnable() { def run() = f }
-
   /**
    * Create the table if needed
    */
   def createTable() = {
     db withSession { implicit session =>
       if (MTable.getTables(TableName).list().isEmpty) {
-        (myData.ddl).create
+        myData.ddl.create
       }
     }
   }
@@ -82,6 +79,7 @@ class SlickAndroidExample extends Activity
    * Add one row to table
    */
   def saveData() : Unit = {
+    // This is an example usage of an implicit database session.
     db withSession {
       implicit session =>
         myData += (0, mEdit.getText().toString)
@@ -92,20 +90,23 @@ class SlickAndroidExample extends Activity
    * Remove data from table
    */
   def clearData() : Unit = {
-    db withSession {
-      implicit session =>
-        myData.delete
-    }
+    // In opposition to saveData(), this is an example of using
+    // an explicit session. It could have been implicit as well.
+    val session = db.createSession()
+    myData.delete(session)
   }
 
+  // Implicit conversion to Runnable when called by runOnUiThread().
+  implicit def toRunnable[F](f: => F): Runnable = new Runnable() { def run() = f }
+
   /**
-   * Process data, then fetch all data to update the UI
+   * Process data, then fetch all data to update the UI.
    * @param process
    */
   def processThenDisplay(process : () => Unit) : Future[List[(Int, String)]] = {
     val fProcessData = Future { process() }
     val fFetchData : Future[List[(Int, String)]] = fProcessData map((nothing) => {
-      // This will be executed after data has been processed
+      // This will be executed after data has been processed.
       fetchRows()
     })
 
