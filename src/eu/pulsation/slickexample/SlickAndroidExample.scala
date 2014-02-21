@@ -82,6 +82,7 @@ class SlickAndroidExample extends Activity
     // This is an example usage of an implicit database session.
     db withSession {
       implicit session =>
+        // Add a row to the existing data set
         myData += (0, mEdit.getText().toString)
     }
   }
@@ -93,6 +94,7 @@ class SlickAndroidExample extends Activity
     // In opposition to saveData(), this is an example of using
     // an explicit session. It could have been implicit as well.
     val session = db.createSession()
+    // Delete all rows
     myData.delete(session)
   }
 
