@@ -86,6 +86,9 @@ class SlickAndroidExample extends Activity
     }
   }
 
+  /**
+   * Remove data from table
+   */
   def clearData() : Unit = {
     db withSession {
       implicit session =>
@@ -111,7 +114,7 @@ class SlickAndroidExample extends Activity
     fFetchData
   }
 
-  // Initialize data
+  // Initialize table
   lazy val initFuture = processThenDisplay(createTable)
 
   /**
