@@ -23,7 +23,7 @@ class SlickAndroidExample extends Activity
   // Table definition
   class MyData(tag: Tag) extends Table[(Int, String)](tag, TableName) {
     def id = column[Int]("ID", O.PrimaryKey, O.AutoInc) // This is the primary key column
-    def name = column[String]("NAME")
+    def name = column[String]("SOME_TEXT")
     // Every table needs a * projection with the same type as the table's type parameter
     def * = (id, name)
   }
@@ -127,7 +127,7 @@ class SlickAndroidExample extends Activity
   }
 
   /**
-   * Insert edit text contents into database
+   * Clear table data
    */
   def clearText(view : View) {
     if (initFuture.isCompleted) {
