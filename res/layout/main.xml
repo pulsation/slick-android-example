@@ -20,7 +20,7 @@
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/clear"
             android:text="Add"
-            android:onClick="saveDataText" />
+            android:onClick="addContent" />
     <Button
             android:id="@+id/clear"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:text="Clear"
-            android:onClick="saveDataText" />
+            android:onClick="clearText" />
     <View
             android:id="@+id/separator"
             android:layout_width="fill_parent"

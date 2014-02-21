@@ -16,7 +16,8 @@ proguardOptions in Android ++= Seq(
   "-dontnote org.slf4j.**",
   "-keep class scala.collection.Seq.**",
   "-keep public class org.sqldroid.**",
-  "-keep class scala.concurrent.Future$.**"
+  "-keep class scala.concurrent.Future$.**",
+  "-keep class scala.slick.driver.JdbcProfile$Implicits"
 )
 
 proguardCache in Android ++= Seq(

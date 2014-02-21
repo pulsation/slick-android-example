@@ -111,6 +111,13 @@ class SlickAndroidExample extends Activity
     }
   }
 
+  def clearData() : Unit = {
+    db withSession {
+      implicit session =>
+        myData.delete
+    }
+  }
+
   /**
    * Process data, then fetch all data to update the UI
    * @param process
@@ -147,7 +154,18 @@ class SlickAndroidExample extends Activity
   /**
    * Insert edit text contents into database
    */
-  def saveDataText(view : View) {
+  def clearText(view : View) {
+    if (initFuture.isCompleted) {
+      processThenDisplay(clearData)
+    } else {
+      Toast.makeText(getApplicationContext(), "Database not initialized yet", Toast.LENGTH_SHORT).show()
+    }
+  }
+
+  /**
+   * Insert edit text contents into database
+   */
+  def addContent(view : View) {
     if (initFuture.isCompleted) {
       processThenDisplay(saveData)
     } else {
