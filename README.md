@@ -107,7 +107,7 @@ runOnUiThread(new Runnable() {
 });
 ```
 
-In order to minimize the needed amount of code, it is possible in Scala to implicitly convert our Activity class into a Runnable whenever one if its method is called as a parameter of ```runOnUiThread()```, of type ```Runnable```.
+In order to minimize the needed amount of code, it is possible in Scala to implicitly convert our Activity class into a Runnable whenever one if its method is called as a parameter of ```runOnUiThread()```.
 
 ```
 implicit def toRunnable[F](f: => F): Runnable = new Runnable() { def run() = f }
