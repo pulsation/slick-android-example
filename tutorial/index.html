@@ -13,6 +13,8 @@
 <p>After that, you can connect your phone or launch an emulator, and run this example by executing :</p>
 <pre><code>$ sbt android:run</code></pre>
 <p>More information is avaliable on pfn's <a href="https://github.com/pfn/android-sdk-plugin">Android SDK plugin for SBT</a>.</p>
+</div>
+<div>
 <h2>Table definition</h2>
 <p>Let's look at the <a href="#code/src/eu/pulsation/slickexample/SlickAndroidExample.scala"
       class="shortcut">src/eu/pulsation/slickexample/SlickAndroidExample.scala</a> file.</p>
@@ -24,14 +26,20 @@
   def * = (id, name)
 }</code></pre>
 <p>You can browse Slick documentation's <a href="http://slick.typesafe.com/doc/2.0.0/gettingstarted.html#schema">Getting Started</a> section for more information.</p>
+</div>
+<div>
 <h2>Connecting to the SQLite database</h2>
 <p><a href="https://github.com/SQLDroid/SQLDroid">SQLDroid</a> is used here as a JDBC driver provider for SQLite on Android. <a href="https://developer.android.com/reference/android/content/Context.html#getFilesDir%28%29">getApplicationContext().getFilesDir()</a> points to a directory that is writable by our application.</p>
 <pre><code>lazy val db = Database.forURL(&quot;jdbc:sqlite:&quot; +
     getApplicationContext().getFilesDir() +
     &quot;slick-sandbox.txt&quot;, driver = &quot;org.sqldroid.SQLDroidDriver&quot;)</code></pre>
+</div>
+<div>
 <h2>Table creation</h2>
 <p>The table instance's ddl component represents the table's schema description, and is used to create this schema in the SQL database.</p>
 <pre><code>myData.ddl.create</code></pre>
+</div>
+<div>
 <h2>Manipulating data</h2>
 <p>Data can be manipulated with Slick in a similar way to common Scala collections. For more information, you can watch <a href="https://www.youtube.com/watch?v=53tBbl8Ovbc">Stefan Zeiger's slick webinar</a>.</p>
 <h3 id="explicit-session"> Explicit session</h3>
@@ -53,6 +61,8 @@ myData.delete(session)</code></pre>
     // Add a row to the existing data set
     myData += (0, mEdit.getText().toString)
 }</code></pre>
+</div>
+<div>
 <h2>Implicit conversion to Runnable</h2>
 <p>In Android, the UI can only be updated in the UI thread. In Java, this would be expressed this way:</p>
 <pre><code>runOnUiThread(new Runnable() {
@@ -64,6 +74,8 @@ myData.delete(session)</code></pre>
 <pre><code>implicit def toRunnable[F](f: =&gt; F): Runnable = new Runnable() { def run() = f }</code></pre>
 <p>As a result, any method can now be directly called in the UI thread.</p>
 <pre><code>runOnUiThread({ displayDataList(rows) })</code></pre>
+</div>
+<div>
 <h2>Futures</h2>
 <p>Executing blocking tasks on the main UI thread would make the application unresponsive. As an alternative to Android's <a href="https://developer.android.com/reference/android/os/AsyncTask.html">AsyncTask</a>, it is possible to wrap blocking tasks in Scala <a href="http://docs.scala-lang.org/overviews/core/futures.html">Futures</a>.</p>
 <pre><code>val fProcessData = Future { process() }</code></pre>
