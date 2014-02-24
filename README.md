@@ -22,7 +22,7 @@ After that, you can connect your phone or launch an emulator, and run this examp
 $ sbt android:run
 ```
 
-Now, let's jump into the code.
+More information is avaliable on pfn's [Android SDK plugin for SBT](https://github.com/pfn/android-sdk-plugin).
 
 ##Table definition
 
@@ -37,7 +37,7 @@ class MyData(tag: Tag) extends Table[(Int, String)](tag, TableName) {
 }
 ```
 
-More information is available on Slick documentation's [Getting Started](http://slick.typesafe.com/doc/2.0.0/gettingstarted.html#schema) section.
+You can browse Slick documentation's [Getting Started](http://slick.typesafe.com/doc/2.0.0/gettingstarted.html#schema) section for more information.
 
 ##Connecting to the SQLite database
 
